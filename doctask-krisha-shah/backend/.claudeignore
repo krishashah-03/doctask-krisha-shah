@@ -1,0 +1,16 @@
+# Environment / secrets — never read into context
+.env
+.env.*
+!.env.example
+
+# Anything that might hold connection strings or keys
+*.pem
+*.key
+secrets/
+credentials/
+
+# Local venv / build artifacts, no reason to scan these either
+.venv/
+__pycache__/
+*.pyc
+node_modules/

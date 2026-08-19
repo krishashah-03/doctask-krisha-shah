@@ -1,0 +1,36 @@
+MASTER SERVICE AGREEMENT
+Contract Reference: MSA-PO4471
+Effective Date: 03 February 2026
+
+PARTIES
+Client: Orion Fabrication Works Ltd ("Client")
+Vendor: Meridian Industrial Supplies Pvt Ltd ("Vendor")
+
+1. SCOPE OF SUPPLY
+Vendor shall supply and deliver 500 units of Grade-B pressure valves (Item Code: PV-500-B)
+to Client's Ankleshwar facility per the delivery schedule in Schedule A.
+
+2. PRICING
+Unit price: INR 4,200 per valve, exclusive of GST.
+Total contract value: INR 21,00,000 (Rupees Twenty-One Lakh only).
+
+3. PAYMENT TERMS
+Payment due within 45 days of invoice date, against delivery and inspection acceptance.
+Late payment interest: 1.5% per month on overdue amount.
+
+4. DELIVERY SCHEDULE
+Tranche 1: 200 units by 15 March 2026
+Tranche 2: 300 units by 30 April 2026
+
+5. WARRANTY
+Vendor warrants all units against manufacturing defects for 18 months from delivery date.
+
+6. PENALTY CLAUSE
+Delay beyond scheduled delivery date incurs penalty of 0.5% of tranche value per week,
+capped at 5% of total tranche value.
+
+7. TERMINATION
+Either party may terminate with 30 days' written notice for uncured material breach.
+
+Signed for Orion Fabrication Works Ltd: R. Menon, Procurement Head
+Signed for Meridian Industrial Supplies Pvt Ltd: S. Kulkarni, Sales Director

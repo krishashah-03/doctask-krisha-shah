@@ -1,0 +1,19 @@
+TAX INVOICE
+Invoice No: INV-1041
+Invoice Date: 16 March 2026
+Reference PO: MSA-PO4471
+
+Bill To: Orion Fabrication Works Ltd, Ankleshwar
+From: Meridian Industrial Supplies Pvt Ltd
+
+Description: Grade-B pressure valves (PV-500-B) — Tranche 1 delivery
+Quantity: 200 units
+Unit Price: INR 4,200
+Subtotal: INR 8,40,000
+GST (18%): INR 1,51,200
+Total Due: INR 9,91,200
+
+Payment Terms: Net 45 days from invoice date (per MSA-PO4471, Clause 3)
+Delivery Note: Delivered 15 March 2026, inspection accepted same day.
+
+Bank Details: Meridian Industrial Supplies Pvt Ltd, A/C ending 7734

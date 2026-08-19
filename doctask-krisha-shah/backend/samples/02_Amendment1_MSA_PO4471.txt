@@ -1,0 +1,25 @@
+AMENDMENT NO. 1 TO MASTER SERVICE AGREEMENT
+Reference: AMD-1-MSA-PO4471
+Amends: MSA-PO4471 (dated 03 February 2026)
+Amendment Date: 20 April 2026
+
+This Amendment is entered into by Orion Fabrication Works Ltd ("Client") and Meridian
+Industrial Supplies Pvt Ltd ("Vendor") to modify the terms of MSA-PO4471 as follows.
+
+1. REVISED PAYMENT TERMS
+Clause 3 of the original Agreement is deleted and replaced with:
+"Payment due within 60 days of invoice date, against delivery and inspection acceptance."
+Reason: Client's finance cycle migration to a new ERP system, requested by Client on
+2 April 2026.
+
+2. REVISED DELIVERY SCHEDULE
+Clause 4, Tranche 2 is amended as follows:
+Tranche 2: 300 units by 31 May 2026 (revised from 30 April 2026).
+Reason: Vendor-side raw material delay, communicated 28 March 2026.
+
+3. NO OTHER CHANGES
+All other terms and conditions of MSA-PO4471, including pricing, warranty, and penalty
+clauses, remain unchanged and in full force.
+
+Signed for Orion Fabrication Works Ltd: R. Menon, Procurement Head
+Signed for Meridian Industrial Supplies Pvt Ltd: S. Kulkarni, Sales Director
