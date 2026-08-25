@@ -78,6 +78,7 @@ class ConflictOut(BaseModel):
     fact_id_b: uuid.UUID
     description: str | None
     status: str
+    run_id: uuid.UUID | None
     detected_at: datetime
 
 
@@ -131,6 +132,7 @@ class FindingOut(BaseModel):
     severity: str | None
     description: str
     status: str
+    run_id: uuid.UUID | None
     created_at: datetime
 
 

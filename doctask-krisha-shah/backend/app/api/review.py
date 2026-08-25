@@ -33,6 +33,7 @@ def get_pending_review(pile_id: uuid.UUID, db: Session = Depends(get_db)) -> lis
                     "fact_key": conflict.fact_key,
                     "fact_id_a": str(conflict.fact_id_a),
                     "fact_id_b": str(conflict.fact_id_b),
+                    "run_id": str(conflict.run_id) if conflict.run_id else None,
                     "detected_at": conflict.detected_at.isoformat(),
                 },
             )
@@ -53,6 +54,7 @@ def get_pending_review(pile_id: uuid.UUID, db: Session = Depends(get_db)) -> lis
                     "severity": finding.severity,
                     "char_start": finding.char_start,
                     "char_end": finding.char_end,
+                    "run_id": str(finding.run_id) if finding.run_id else None,
                 },
             )
         )

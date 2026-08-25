@@ -2,11 +2,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { get } from '../api/client'
 import ConflictCard from '../components/ConflictCard'
 import FindingCard from '../components/FindingCard'
+import InfoNote from '../components/InfoNote'
 
 export default function PendingReview() {
   const [piles, setPiles] = useState(null)
   const [selectedPileId, setSelectedPileId] = useState('')
   const [items, setItems] = useState(null)
+  const [factsById, setFactsById] = useState({})
+  const [documentsById, setDocumentsById] = useState({})
+  const [rulesById, setRulesById] = useState({})
   const [error, setError] = useState(null)
 
   useEffect(() => {
@@ -22,6 +26,17 @@ export default function PendingReview() {
     if (!selectedPileId) return
     get(`/piles/${selectedPileId}/pending-review`)
       .then(setItems)
+      .catch((err) => setError(err.message))
+    Promise.all([
+      get(`/piles/${selectedPileId}/facts`),
+      get(`/piles/${selectedPileId}/documents`),
+      get(`/piles/${selectedPileId}/rules`),
+    ])
+      .then(([facts, documents, rules]) => {
+        setFactsById(Object.fromEntries(facts.map((fact) => [fact.id, fact])))
+        setDocumentsById(Object.fromEntries(documents.map((doc) => [doc.id, doc])))
+        setRulesById(Object.fromEntries(rules.map((rule) => [rule.id, rule])))
+      })
       .catch((err) => setError(err.message))
   }, [selectedPileId])
 
@@ -48,6 +63,14 @@ export default function PendingReview() {
         )}
       </div>
 
+      <InfoNote>
+        <p>
+          This is the human gate: every conflict and finding below is pending approval or rejection before it
+          affects the deliverable. Nothing here is auto-resolved — approve or reject each one individually,
+          and rejecting one doesn't discard the rest.
+        </p>
+      </InfoNote>
+
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       {piles === null ? (
@@ -62,9 +85,15 @@ export default function PendingReview() {
         <div className="flex flex-col gap-3">
           {items.map((item) =>
             item.item_type === 'conflict' ? (
-              <ConflictCard key={item.item_id} conflict={item} onDecided={refresh} />
+              <ConflictCard
+                key={item.item_id}
+                conflict={item}
+                factsById={factsById}
+                documentsById={documentsById}
+                onDecided={refresh}
+              />
             ) : (
-              <FindingCard key={item.item_id} finding={item} onDecided={refresh} />
+              <FindingCard key={item.item_id} finding={item} rulesById={rulesById} onDecided={refresh} />
             )
           )}
         </div>

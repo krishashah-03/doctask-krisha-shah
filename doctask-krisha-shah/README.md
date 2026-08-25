@@ -81,7 +81,10 @@ from making the specific unsafe operations safe:
   → HTTP 409. The caller decides whether to retry; the server never
   silently retries for them.
 
-See `docs/architecture-diagram.png` for a visual walkthrough of the above.
+![Architecture diagram](docs/architecture-diagram.png)
+*Documents enter through Intake, flow through the LangGraph StateGraph (checkpointed to
+Postgres after every node), stop at the human review gate, and only an explicit commit
+produces a new deliverable version.*
 
 ## Setup
 
@@ -147,14 +150,12 @@ are required unless you set `LLM_PROVIDER` to that provider.
 |---|---|---|
 | `DATABASE_URL` | **Required** | Postgres connection string; also used by the LangGraph checkpointer. |
 | `STORAGE_ROOT` | Optional (default `./storage`) | Where uploaded document bytes are content-addressed and stored on disk. |
-| `LLM_PROVIDER` | Optional (default `mock`) | `mock`, `openrouter`, `gemini`, or `ollama`. `mock` needs no key or network access at all — it's what the test suite and this repo's default setup use. |
-| `OPENROUTER_API_KEY` | Required only if `LLM_PROVIDER=openrouter` | OpenRouter API key. |
-| `OPENROUTER_MODEL` | Optional (default `openai/gpt-4o-mini`) | Model id passed to OpenRouter. |
-| `GEMINI_API_KEY` | Required only if `LLM_PROVIDER=gemini` | Google AI Studio API key. |
-| `GEMINI_MODEL` | Optional (default `gemini-1.5-flash`) | Gemini model id — check availability; Google retires model versions periodically. |
+| `LLM_PROVIDER` | Optional (default `mock`) | `mock`, `ollama`, or `groq`. `mock` needs no key or network access at all — it's what the test suite and this repo's default setup use. |
 | `OLLAMA_BASE_URL` | Optional (default `http://localhost:11434`) | Local Ollama, or `https://ollama.com` for Ollama Cloud. |
 | `OLLAMA_MODEL` | Optional (default `llama3.1`) | Model id/tag; must exist in whichever Ollama endpoint you point at. |
 | `OLLAMA_API_KEY` | Required only for Ollama **Cloud** | Leave blank for a local Ollama server. |
+| `GROQ_API_KEY` | Required only if `LLM_PROVIDER=groq` | Free tier, no card required: https://console.groq.com/keys |
+| `GROQ_MODEL` | Optional (default `openai/gpt-oss-20b`) | Model id; Groq's catalog changes over time — if this 404s, check `console.groq.com` for the current list. |
 | `SUPERDOCS_API_KEY` | Currently unused | Reserved; nothing in the codebase reads it yet. |
 
 `frontend/.env.example` has one variable: `VITE_API_BASE_URL`, the backend's
@@ -224,16 +225,21 @@ the same three methods; nothing above the storage layer would need to
 change.
 
 **The LLM layer is provider-agnostic, not hardcoded.** `get_llm_client()`
-dispatches on `LLM_PROVIDER` to one of `mock`/`openrouter`/`gemini`/`ollama`,
-all behind one `LLMClient.complete(system_prompt, user_prompt) -> LLMResponse`
-interface. This wasn't scope creep — it came directly out of needing a
-mock path that requires no credentials at all for tests and for anyone
-evaluating this submission, while still being able to prove the system
-against real models during development (all four providers were exercised
-manually at various points; OpenRouter, Gemini, and Ollama Cloud all had
-their own connectivity quirks along the way — billing, model retirement,
-auth — which is part of why the mock path exists as the default rather than
-as an afterthought).
+dispatches on `LLM_PROVIDER` to one of `mock`/`ollama`/`groq`, all behind one
+`LLMClient.complete(system_prompt, user_prompt) -> LLMResponse` interface.
+This wasn't scope creep — it came directly out of needing a mock path that
+requires no credentials at all for tests and for anyone evaluating this
+submission, while still being able to prove the system against real models
+during development. Both real providers needed real accommodation, not just
+a working URL: Ollama Cloud needs a generous request timeout for its cold
+start after being idle. Groq's `gpt-oss` model is a reasoning model, and it
+silently returns an empty completion under strict JSON mode unless
+`reasoning_effort` and a bounded `max_completion_tokens` are set explicitly
+— and Groq's free-tier rate limit is charged against the *reserved*
+completion budget rather than actual usage, so an overly generous
+`max_completion_tokens` alone can trigger a 429 on a single call. Both are
+handled in `app/llm/ollama.py` / `app/llm/groq.py` rather than worked around
+ad hoc at the call site, which is the point of the interface.
 
 **Ambiguous-brief assumptions made:**
 - "Conflict" is defined as: same `fact_key`, different `document_id`,

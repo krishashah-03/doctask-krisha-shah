@@ -26,19 +26,14 @@ def get_llm_client() -> LLMClient:
 
         return MockLLMClient()
 
-    if provider == "openrouter":
-        from app.llm.openrouter import OpenRouterLLMClient
-
-        return OpenRouterLLMClient()
-
-    if provider == "gemini":
-        from app.llm.gemini import GeminiLLMClient
-
-        return GeminiLLMClient()
-
     if provider == "ollama":
         from app.llm.ollama import OllamaLLMClient
 
         return OllamaLLMClient()
+
+    if provider == "groq":
+        from app.llm.groq import GroqLLMClient
+
+        return GroqLLMClient()
 
     raise ValueError(f"Unknown LLM_PROVIDER: {settings.LLM_PROVIDER!r}")
